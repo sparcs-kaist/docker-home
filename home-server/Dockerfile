@@ -13,17 +13,7 @@ RUN apt-get install -y \
     locales \
     wget \
 	git \
-    mongodb-clients \
-    stunnel4 \
-    nfs-common \
-    binutils
-
-# EFS-Utils installation
-RUN git clone https://github.com/aws/efs-utils
-WORKDIR /efs-utils
-RUN ./build-deb.sh
-RUN dpkg -i ./build/amazon-efs-utils*deb
-WORKDIR /
+    mongodb-clients
 
 # Creating users
 RUN adduser --gecos "" --disabled-password sysop

@@ -21,6 +21,9 @@ services:
       - "8022:22"
     volumes:
       - ./log-home:/root/.forever
+      - ./data/files:/sparcs.org/static/files
+      - ./data/images:/sparcs.org/static/images
+      - ./data/seminars:/sparcs.org/static/seminars
     links:
       - home-db:home-db
     depends_on:

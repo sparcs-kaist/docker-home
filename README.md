@@ -45,6 +45,10 @@ git clone https://github.com/sparcs-kaist/docker-home.git
 cd docker-home
 mkdir log-db log-home log-nugu
 ```
+* The following directories should exist in the `./data` directory:
+  * `files`
+  * `images`
+  * `seminars`
 * The following files should exist in the `./home-db` directory:
   * `mongodb.env`
   * `secret.env`
