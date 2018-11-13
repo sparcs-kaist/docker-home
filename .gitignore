@@ -1,0 +1,5 @@
+*.sw[op]
+
+secret.env
+localconfig.js
+settings_local.py

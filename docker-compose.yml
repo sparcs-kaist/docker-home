@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  home-db:
+    container_name: home-db
+    restart: always
+    env_file:
+      - ./home-db/mongodb.env
+      - ./home-db/secret.env
+    image: mongo:3.4.1
+    volumes:
+      - ./home-db/db:/data/db
+      - ./home-db/mongodb.conf:/etc/mongodb.conf
+      - ./log-db:/var/log/mongodb
+  home-server:
+    container_name: home-server
+    restart: always
+    build: ./home-server
+    tty: true
+    ports:
+      - "8022:22"
+    volumes:
+      - ./log-home:/root/.forever
+    links:
+      - home-db:home-db
+    depends_on:
+      - home-db
+  nugu-server:
+    container_name: nugu-server
+    restart: always
+    build: ./nugu-server
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8023:22"
+    volumes:
+      - ./log-nugu:/var/log/apache2
+    links:
+      - home-server:home-server
+    depends_on:
+      - home-server
