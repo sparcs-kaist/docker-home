@@ -1,4 +1,4 @@
-FROM python:3.6-jessie
+FROM python:3.4-jessie
 MAINTAINER SPARCS WHEEL <wheel@sparcs.org>
 
 # Packages installation
@@ -39,6 +39,7 @@ RUN chmod u+x certbot-auto
 # Apache configuration
 COPY ./home.conf /etc/apache2/sites-available/home.conf
 RUN a2enmod ssl
+RUN a2enmod proxy_http
 
 # Repository cloning and pip installation
 RUN git clone https://github.com/sparcs-kaist/nugu-api.git
