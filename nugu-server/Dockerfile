@@ -43,6 +43,7 @@ RUN a2enmod proxy_http
 
 # Repository cloning and pip installation
 RUN git clone https://github.com/sparcs-kaist/nugu-api.git
+COPY ./settings_local.py /nugu-api/nugu/settings_local.py
 WORKDIR /nugu-api
 RUN pip install -r requirements.txt
 
