@@ -43,8 +43,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.1/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
 git clone https://github.com/sparcs-kaist/docker-home.git
 cd docker-home
-```
 mkdir log-db log-home log-nugu
+```
 * The following files should exist in the `./home-db` directory:
   * `mongodb.env`
   * `secret.env`
