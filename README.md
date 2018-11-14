@@ -41,14 +41,14 @@ sudo apt-get install -y docker-ce
 sudo curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.1/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+sudo systemctl enable docker
 git clone https://github.com/sparcs-kaist/docker-home.git
 cd docker-home
-mkdir log-db log-home log-nugu
+mkdir log-db log-home log-nugu data
+sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport [ip]:/data data
+sudo /bin/bash -c \
+  "echo [ip]:/data /home/wheel/docker-home/data nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,_netdev,noresvport 0 0 >> /etc/fstab"
 ```
-* The following directories should exist in the `./data` directory:
-  * `files`
-  * `images`
-  * `seminars`
 * The following files should exist in the `./home-db` directory:
   * `mongodb.env`
   * `secret.env`

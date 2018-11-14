@@ -12,7 +12,7 @@ RUN apt-get install -y \
     tmux \
     locales \
     wget \
-	git \
+    git \
     mongodb-clients
 
 # Creating users
