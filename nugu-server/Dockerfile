@@ -40,4 +40,4 @@ COPY ./settings_local.py /nugu-api/nugu/settings_local.py
 WORKDIR /nugu-api
 RUN pip install -r requirements.txt
 
-CMD /bin/bash -c "service ssh start && service cron start && /bin/bash"
+CMD /bin/bash -c "service ssh start && /bin/bash"
