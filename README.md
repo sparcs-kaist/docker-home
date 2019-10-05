@@ -12,7 +12,7 @@ sudo docker exec -it nugu-server /bin/bash -c "echo SYSOP && passwd sysop && ech
 sudo docker exec nugu-server /bin/bash -c "\
   a2ensite home && \
   a2dissite 000-default && \
-  service apache2 reload"
+  service apache2 restart"
 ```
 
 ## Setup
@@ -74,3 +74,5 @@ certbot --nginx -d sparcs.org nugu.sparcs.org
 # 3. Disagree sharing email
 # 4. 2: Redirect
 ```
+
+* Check whether sparcs.org and nugu.sparcs.org are working fine or not.
