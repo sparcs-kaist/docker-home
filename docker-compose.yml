@@ -18,6 +18,7 @@ services:
     build: ./home-server
     tty: true
     ports:
+      - "10000:15693"
       - "8022:22"
     volumes:
       - ./log-home:/root/.forever
@@ -34,12 +35,7 @@ services:
     build: ./nugu-server
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - "10002:80"
       - "8023:22"
     volumes:
       - ./log-nugu:/var/log/apache2
-    links:
-      - home-server:home-server
-    depends_on:
-      - home-server

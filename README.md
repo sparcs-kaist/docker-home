@@ -10,26 +10,11 @@ sudo docker exec -it nugu-server /bin/bash -c "echo SYSOP && passwd sysop && ech
 * You should issue and install the certificate by executing the follwing command at your host:
 ```shell
 sudo docker exec nugu-server /bin/bash -c "\
-  service apache2 stop && \
-  /certbot-auto certonly -n --apache -m wheel@sparcs.org --agree-tos -d sparcs.org -d www.sparcs.org -d nugu.sparcs.org && \
-  a2dissite 000-default && \
   a2ensite home && \
-  service apache2 restart && \
-  service apache2 reload"
-```
-* After finishing the jobs, you should contact the KAIST IC team and change the DNS record of `sparcs.kaist.ac.kr`.
-* Issue certificates for `sparcs.kaist.ac.kr`.
-```shell
-sudo docker exec nugu-server /bin/bash -c "\
-  service apache2 stop && \
-  a2dissite home && \
-  a2ensite 000-default && \
-  /certbot-auto certonly -n --apache -m wheel@sparcs.org --agree-tos -d sparcs.kaist.ac.kr && \
   a2dissite 000-default && \
-  a2ensite home && \
-  service apache2 restart && \
-  service apache2 reload"
+  service apache2 restart"
 ```
+
 ## Setup
 ```shell
 sudo apt-get update
@@ -66,3 +51,28 @@ sudo /bin/bash -c \
 ```shell
 sudo docker-compose up -d
 ```
+* After containers are up, you should proxy each domain's request to corresponding container
+```shell
+sudo apt-get -y install nginx
+cp /path/to/sparcs.org /etc/nginx/sites-available/sparcs.org # sparcs.org can be found in repository root
+cp /path/to/nugu.sparcs.org /etc/nginx/sites-available/sparcs.org
+sudo ln -s /etc/nginx/sites-available/sparcs.org /etc/ngins/sites-enabled/sparcs.org
+sudo ln -s /etc/nginx/sites-available/nugu.sparcs.org /etc/ngins/sites-enabled/nugu.sparcs.org
+sudo systemctl start nginx
+```
+
+* After nginx is up, you should generate ssl certificate to each domains with certbot.
+```shell
+apt-get install -y software-properties-common python-software-properties
+add-apt-repository ppa:certbot/certbot
+apt-get update
+apt-get install -y python-certbot-apache
+certbot --nginx -d sparcs.org nugu.sparcs.org
+# On prompt, enter
+# 1. wheel@sparcs.org
+# 2. Agree to terms of service
+# 3. Disagree sharing email
+# 4. 2: Redirect
+```
+
+* Check whether sparcs.org and nugu.sparcs.org are working fine or not.
