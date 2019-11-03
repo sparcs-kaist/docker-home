@@ -66,7 +66,7 @@ sudo systemctl start nginx
 apt-get install -y software-properties-common python-software-properties
 add-apt-repository ppa:certbot/certbot
 apt-get update
-apt-get install -y python-certbot-apache
+apt-get install -y python-certbot-nginx
 certbot --nginx -d sparcs.org nugu.sparcs.org
 # On prompt, enter
 # 1. wheel@sparcs.org
