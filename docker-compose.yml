@@ -12,30 +12,16 @@ services:
       - ./home-db/db:/data/db
       - ./home-db/mongodb.conf:/etc/mongodb.conf
       - ./log-db:/var/log/mongodb
+
   home-server:
     container_name: home-server
     restart: always
     build: ./home-server
-    tty: true
     ports:
-      - "10000:15693"
-      - "8022:22"
+      - "10000:3000"
     volumes:
-      - ./log-home:/root/.forever
-      - ./data/files:/sparcs.org/dist/static/files
-      - ./data/images:/sparcs.org/dist/static/images
-      - ./data/seminars:/sparcs.org/dist/static/seminars
+      - ./home-server/config.json:/usr/src/app/config.json
     links:
       - home-db:home-db
     depends_on:
       - home-db
-  nugu-server:
-    container_name: nugu-server
-    restart: always
-    build: ./nugu-server
-    tty: true
-    ports:
-      - "10002:80"
-      - "8023:22"
-    volumes:
-      - ./log-nugu:/var/log/apache2

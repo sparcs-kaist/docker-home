@@ -1,19 +1,6 @@
 # docker-home
 * This docker-compose will automatically set up the `sparcs.org` for domains `sparcs.org` and `www.sparcs.org`.
-* This docker-compose will automatically set up the `nugu` service for domain `nugu.sparcs.org`.
-* Make sure that the DNS records of `sparcs.org`, `www.sparcs.org`, and `nugu.sparcs.org` to be equal to the IP address of your host before starting the following jobs.
-* You should change the password of users `sysop` and `wheel` by executing the following command at your host:
-```shell
-sudo docker exec -it home-server /bin/bash -c "echo SYSOP && passwd sysop && echo WHEEL && passwd wheel"
-sudo docker exec -it nugu-server /bin/bash -c "echo SYSOP && passwd sysop && echo WHEEL && passwd wheel"
-```
-* You should issue and install the certificate by executing the follwing command at your host:
-```shell
-sudo docker exec nugu-server /bin/bash -c "\
-  a2ensite home && \
-  a2dissite 000-default && \
-  service apache2 restart"
-```
+* Make sure that the DNS records of `sparcs.org`, `www.sparcs.org`, to be equal to the IP address of your host before starting the following jobs.
 
 ## Setup
 ```shell
@@ -29,10 +16,7 @@ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.1/contrib/com
 sudo systemctl enable docker
 git clone https://github.com/sparcs-kaist/docker-home.git
 cd docker-home
-mkdir log-db log-home log-nugu data
-sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport [ip]:/data data
-sudo /bin/bash -c \
-  "echo [ip]:/data /home/wheel/docker-home/data nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,_netdev,noresvport 0 0 >> /etc/fstab"
+mkdir log-db
 ```
 * The following files should exist in the `./home-db` directory:
   * `mongodb.env`
@@ -41,13 +25,7 @@ sudo /bin/bash -c \
 * The following directory should exist in the `./home-db` directory:
   * `db`
 * The following files should exist in the `./home-server` directory:
-  * `localconfig.js`
-  * `semantic.json`
-* The following directory should exist in the `./home-server` directory:
-  * `semantic`
-* The following files should exist in the `./nugu-server` directory:
-  * `settings_local.py`
-  * `home.conf`
+  * `config.json`
 ```shell
 sudo docker-compose up -d
 ```
@@ -55,9 +33,7 @@ sudo docker-compose up -d
 ```shell
 sudo apt-get -y install nginx
 cp /path/to/sparcs.org /etc/nginx/sites-available/sparcs.org # sparcs.org can be found in repository root
-cp /path/to/nugu.sparcs.org /etc/nginx/sites-available/sparcs.org
 sudo ln -s /etc/nginx/sites-available/sparcs.org /etc/ngins/sites-enabled/sparcs.org
-sudo ln -s /etc/nginx/sites-available/nugu.sparcs.org /etc/ngins/sites-enabled/nugu.sparcs.org
 sudo systemctl start nginx
 ```
 
@@ -67,7 +43,7 @@ apt-get install -y software-properties-common python-software-properties
 add-apt-repository ppa:certbot/certbot
 apt-get update
 apt-get install -y python-certbot-nginx
-certbot --nginx -d sparcs.org nugu.sparcs.org
+certbot --nginx -d sparcs.org
 # On prompt, enter
 # 1. wheel@sparcs.org
 # 2. Agree to terms of service
@@ -75,4 +51,4 @@ certbot --nginx -d sparcs.org nugu.sparcs.org
 # 4. 2: Redirect
 ```
 
-* Check whether sparcs.org and nugu.sparcs.org are working fine or not.
+* Check whether sparcs.org is working fine or not.

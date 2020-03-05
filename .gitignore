@@ -1,5 +1,7 @@
 *.sw[op]
 
 secret.env
-localconfig.js
-settings_local.py
+config.json
+
+log-db
+home-db/db
