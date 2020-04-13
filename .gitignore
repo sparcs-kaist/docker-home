@@ -2,6 +2,7 @@
 
 secret.env
 config.json
+*.pem
 
 log-db
 home-db/db

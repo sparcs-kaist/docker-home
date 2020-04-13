@@ -26,14 +26,26 @@ mkdir log-db
   * `db`
 * The following files should exist in the `./home-server` directory:
   * `config.json`
+    * You can get one from [sparcs.org-v2](https://github.com/sparcs-kaist/sparcs.org-v2)
+    * You should set mongoUrl to "mongodb://home-db:27017/sparcs-home"
+  * `key.pem` (You can generate by `openssl genrsa -out key.pem 2048`)
 ```shell
 sudo docker-compose up -d
+```
+* You can add admin accounts
+```shell
+docker exec -it home-db mongo
+# In mongo, enter
+# > use sparcs-home
+# > db.memberattrs.insertOne({ id: "your-sparcs-id", admin: true, ignore: false })
+# > exit
+
 ```
 * After containers are up, you should proxy each domain's request to corresponding container
 ```shell
 sudo apt-get -y install nginx
 cp /path/to/sparcs.org /etc/nginx/sites-available/sparcs.org # sparcs.org can be found in repository root
-sudo ln -s /etc/nginx/sites-available/sparcs.org /etc/ngins/sites-enabled/sparcs.org
+sudo ln -s /etc/nginx/sites-available/sparcs.org /etc/nginx/sites-enabled/sparcs.org
 sudo systemctl start nginx
 ```
 
@@ -52,3 +64,14 @@ certbot --nginx -d sparcs.org
 ```
 
 * Check whether sparcs.org is working fine or not.
+
+## Rebuild
+After pushing to [sparcs.org-v2](https://github.com/sparcs-kaist/sparcs.org-v2), you can rebuild using `docker-compose build --no-cache`
+Then, `docker-compose up -d` to restart server.
+
+## DB Import/Export
+* Import
+  * `docker exec -i home-db sh -c 'mongoimport --db sparcs-home --collection COLLECTION-NAME' < JSONFILENAME.json`
+  * collections are `years`, `albums`, `members`, `seminars`, `notifications`, `memberattrs`, `options`
+* Export
+  * `docker exec -i home-db sh -c 'mongoexport --db sparcs-home --collection COLLECTION-NAME' > JSONFILENAME.json`

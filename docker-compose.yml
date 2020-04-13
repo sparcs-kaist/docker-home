@@ -21,6 +21,7 @@ services:
       - "10000:3000"
     volumes:
       - ./home-server/config.json:/usr/src/app/config.json
+      - ./home-server/key.pem:/usr/src/app/key.pem
     links:
       - home-db:home-db
     depends_on:
