@@ -1,6 +1,5 @@
 # --------- BUILD STAGE ---------
-FROM node:13-alpine AS build
-MAINTAINER SPARCS WHEEL <wheel@sparcs.org>
+FROM node:15-alpine AS build
 
 # Install needed applications
 RUN apk add --no-cache \
@@ -29,8 +28,7 @@ RUN mkdir output && \
     mv node_modules output
 
 # --------- RELEASE STAGE ---------
-FROM node:13-alpine AS release
-MAINTAINER SPARCS WHEEL <wheel@sparcs.org>
+FROM node:15-alpine AS release
 
 WORKDIR /usr/src/app
 
